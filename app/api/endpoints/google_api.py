@@ -12,8 +12,8 @@ from app.services.google_api import (
     spreadsheets_update_value
 )
 
-
 google_router = APIRouter()
+
 
 @google_router.post(
     '/',

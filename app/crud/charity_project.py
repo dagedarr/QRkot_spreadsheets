@@ -66,7 +66,7 @@ class CRUDCharityProject(CRUDBase):
             select([
                 CharityProject.name,
                 (
-                    func.julianday(CharityProject.close_date) - 
+                    func.julianday(CharityProject.close_date) -
                     func.julianday(CharityProject.create_date)
                 ).label('duration'),
                 CharityProject.description
@@ -75,5 +75,6 @@ class CRUDCharityProject(CRUDBase):
             ).order_by('duration')
         )
         return projects.all()
+
 
 charity_project_crud = CRUDCharityProject(CharityProject)
