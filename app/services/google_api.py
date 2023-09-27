@@ -24,7 +24,7 @@ async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
         service.spreadsheets.create(json=spreadsheet_body)
     )
     spreadsheetid = response['spreadsheetId']
-    return spreadsheetid 
+    return spreadsheetid
 
 
 async def set_user_permissions(
