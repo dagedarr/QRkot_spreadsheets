@@ -3,6 +3,7 @@ from typing import Optional
 
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -57,5 +58,22 @@ class CRUDCharityProject(CRUDBase):
         await session.refresh(db_obj)
         return db_obj
 
+    async def get_projects_by_completion_rate(
+            self,
+            session: AsyncSession,
+    ):
+        projects = await session.execute(
+            select([
+                CharityProject.name,
+                (
+                    func.julianday(CharityProject.close_date) - 
+                    func.julianday(CharityProject.create_date)
+                ).label('duration'),
+                CharityProject.description
+            ]).where(
+                CharityProject.fully_invested
+            ).order_by('duration')
+        )
+        return projects.all()
 
 charity_project_crud = CRUDCharityProject(CharityProject)
