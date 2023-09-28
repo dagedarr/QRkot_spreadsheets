@@ -3,6 +3,11 @@ from aiogoogle.auth.creds import ServiceAccountCreds
 
 from app.core.config import settings
 
+SPREADSHEET_VER = 'v4'
+ROW_COUNT = 100
+COLUMN_COUNT = 11
+
+
 SCOPES = [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive'
