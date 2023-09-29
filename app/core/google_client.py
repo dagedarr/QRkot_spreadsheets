@@ -4,6 +4,8 @@ from aiogoogle.auth.creds import ServiceAccountCreds
 from app.core.config import settings
 
 SPREADSHEET_VER = 'v4'
+DRIVE_VER = 'v3'
+SPREADSHEET_RANGE = 'A1:E30'
 ROW_COUNT = 100
 COLUMN_COUNT = 11
 

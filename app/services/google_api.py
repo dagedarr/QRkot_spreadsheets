@@ -2,7 +2,9 @@ from datetime import datetime, timedelta
 
 from aiogoogle import Aiogoogle
 
-from app.core.google_client import COLUMN_COUNT, ROW_COUNT, SPREADSHEET_VER, settings
+from app.core.google_client import (COLUMN_COUNT, DRIVE_VER, ROW_COUNT,
+                                    SPREADSHEET_RANGE, SPREADSHEET_VER,
+                                    settings)
 
 FORMAT = '%Y/%m/%d %H:%M:%S'
 
@@ -34,7 +36,7 @@ async def set_user_permissions(
     permissions_body = {'type': 'user',
                         'role': 'writer',
                         'emailAddress': settings.email}
-    service = await wrapper_services.discover('drive', 'v3')
+    service = await wrapper_services.discover('drive', DRIVE_VER)
     await wrapper_services.as_service_account(
         service.permissions.create(
             fileId=spreadsheet_id,
@@ -49,7 +51,7 @@ async def spreadsheets_update_value(
         wrapper_services: Aiogoogle
 ) -> None:
     now_date_time = datetime.now().strftime(FORMAT)
-    service = await wrapper_services.discover('sheets', 'v4')
+    service = await wrapper_services.discover('sheets', SPREADSHEET_VER)
 
     table_values = [
         ['Отчет от', now_date_time],
@@ -58,7 +60,14 @@ async def spreadsheets_update_value(
     ]
 
     for res in projects:
-        new_row = [str(res['name']), str(timedelta(res['duration'])), str(res['description'])]
+        new_row = list(map(
+            str,
+            (
+                res['name'],
+                timedelta(res['duration']),
+                res['description']
+            )
+        ))
         table_values.append(new_row)
 
     update_body = {
@@ -68,7 +77,7 @@ async def spreadsheets_update_value(
     await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
             spreadsheetId=spreadsheet_id,
-            range='A1:E30',
+            range=SPREADSHEET_RANGE,
             valueInputOption='USER_ENTERED',
             json=update_body
         )
