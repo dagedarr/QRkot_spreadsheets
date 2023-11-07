@@ -9,7 +9,7 @@
 
 1. Клонируйте репозиторий
 ```
-https://github.com/dagedarr/QRkot_spreadsheets.git
+git clone https://github.com/dagedarr/QRkot_spreadsheets.git
 ```
 Если вы не используете Git, то вы можете просто скачать исходный код репозитория в ZIP-архиве и распаковать его на свой компьютер.
 
